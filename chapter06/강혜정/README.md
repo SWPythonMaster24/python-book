@@ -161,3 +161,60 @@ for name in favorite_languages.keys():
 # Edward
 # Phill
 ```
+딕셔너리 순회의 기본 값은 키만 순회하는 것이므로 두 코드의 결과는 똑같다.
+```python
+for name in favorite_languages:
+
+for name in favorite_languages.keys():
+```
+
+### 딕셔너리 키를 순서에 따라 순회하기
+for 루프에서 반환하는 키를 정렬하는 방법은 sorted() 함수를 써서 정렬하면 된다
+```python
+for language in sorted(favorite_languages.keys()):
+    print(language.title())
+```
+
+### 딕셔너리의 값 순회하기
+values() 메서드는 딕셔너리의 값을 반환한다
+```python
+for language in favorite_languages.values():
+    print(language.title())
+
+for language in set(favorite_languages.values()): # set()을 통해 중복을 제거할 수 있다
+    print(language.title())
+```
+
+
+## 중첩
+리스트 안에 딕셔너리를, 딕셔너리 안에 리스트를, 딕셔너리 안에 딕셔너리를 중첩할 수 있다.
+
+### 딕셔너리를 담은 리스트
+```
+alien_0 = {'color' : 'green',   'points' : 5}
+alien_1 = {'color' : 'yellow',  'points' : 10}
+alien_2 = {'color' : 'red',     'points' : 15}
+
+aliens = [alien_0, alien_1, alien_2]
+
+for alien in aliens:
+    print(alien)
+
+# {'color' : 'green',   'points' : 5}
+# {'color' : 'yellow',  'points' : 10}
+# {'color' : 'red',     'points' : 15}
+```
+
+### 리스트를 담은 딕셔너리
+```python
+pizza = {
+    'crust': 'thick',
+    'toppings': ['mushrooms', 'extra cheese'],
+}
+
+print(f"You ordered a {pizza['crust']}-crust pizza "
+      "with the following toppings:")
+
+for topping in pizza['toppings']:
+    print("\t" + topping)
+```
