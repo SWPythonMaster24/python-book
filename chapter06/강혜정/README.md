@@ -178,6 +178,13 @@ for language in sorted(favorite_languages.keys()):
 ### 딕셔너리의 값 순회하기
 values() 메서드는 딕셔너리의 값을 반환한다
 ```python
+favorite_languages = {
+    'jen': 'python',
+    'sarah': 'c',
+    'edward': 'rust'.
+    'phill': 'python',
+}
+
 for language in favorite_languages.values():
     print(language.title())
 
@@ -217,4 +224,30 @@ print(f"You ordered a {pizza['crust']}-crust pizza "
 
 for topping in pizza['toppings']:
     print("\t" + topping)
+```
+
+### 딕셔너리를 담은 딕셔너리
+```python
+users = {
+    'aeinstein': {
+        'first': 'albert',
+        'last': 'einstein',
+        'location': 'princeton'
+    },
+    
+    'mcurie': {
+        'first': 'marie',
+        'last': 'curie',
+        'location': 'paris'
+    },
+}
+
+for username, user_info in users.items():
+    print(f"\nUsername: {username}")
+    
+    full_name = f"{user_info['first']} {user_info['last']}"
+    location = user_info['location']
+    
+    print(f"\tFull name: {full_name.title()}")
+    print(f"\tLocation: {location.title()}")
 ```
