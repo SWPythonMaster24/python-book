@@ -52,4 +52,6 @@ print(f"Here is the sorted list:\n{sorted(cars)}")
 # reverse 역순
 print(f"Here is the reserve sorted list:\n{sorted(cars, reverse=1)}")
 ```
-
+---
+## **팀원 발표(나의 보충)**
+> 리스트의 변수명은 복수형 설정하는게 좋다.<br>-선영님
