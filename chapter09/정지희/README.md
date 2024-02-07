@@ -121,3 +121,28 @@ class Battery:
         """배터리 크기를 설명하는 문장을 출력"""
         print(f"This car has a {self.battery_size}-kWh battery.")
 ```
+---
+## **클래스 임포트**
+```python
+# 단일 클래스 임포트
+from car import Car
+
+# 모듈에서 여러 클래스 임포트하기
+from car import Car, ElectricCar
+
+# 전체 모듈 임포트 하기
+improt car
+
+# 별칭 사용하기
+from electric_car improt ElectricCar as EC
+```
+##### 함수와 같이 클래스 또한 임포트가 가능하다.
+---
+## **클래스 스타일**
+
+- 클래스 이름은 **카멜 표기법**을 사용
+- 인스턴스와 모듈 이름은 소문자와 밑줄로 생성해야 함
+- 클래스 정의 다음에는 항상 독스트링이 있어야한다
+- 클래스 내부의 메서드 사이에는 빈 줄을 하나 삽입한다
+- 모듈 내부의 클래스들은 빈 줄 두 개로 구분한다
+- 표준 라이브러리와 모듈 모두 임포트 하는 경우, 표준 라이브러리를 먼저 임포트 해야한다.
