@@ -331,9 +331,56 @@ print(user_profile)
 3) 함수를 별도의 파일에 저장하면 다른 프로그래머와 해당 파일만 공유할 수도 있다.
 
 ### 전체 모듈 임포트하기
+```python
+import module_name
+
+# ex.
+# import pizza
+# pizza.make_pizza(16, 'peperoni')
+```
+
 ### 특정 함수 임포트하기
+```python
+module_name import function_name
+
+# ex.
+# from piaaz import make_pizza
+# make_pizza(16, 'peperoni')
+```
+
 ### as로 함수에 별칭 부여하기
+```python
+module_name import function_name as fn
+
+# ex.
+# from piaaz import make_pizza as mp
+# mp(16, 'peperoni')
+```
+
 ### as로 모듈에 별칭 부여하기
+```python
+import module_name as mn
+
+# ex.
+# import pizza as p
+# p.make_pizza(16, 'peperoni')
+```
+
 ### 모듈의 함수를 모두 임포트하기
+```python
+from module_name import *
+```
+이 방법은 점 표기법을 사용하지 않고 함수 이름을 바로 호출하기 때문에 권장하지 않는다.
+
+임포트한 모듈에 개인이 만든 함수 이름과 같은 함수가 있다면, 이름이 같은 함수와 변수를 별도로 임포트하는 대신 덮어쓴다.
 
 ## 함수 스타일
+- 함수 이름은 뜻이 분명해야 하고, 소문자와 밑줄만 사용해야 한다.
+- 모든 함수에는 함수가 하는 일을 간결하게 설명하는 주석이 있어야 한다. -> 독스트링 형태
+- 매개변수의 개본 값을 지정할 때는 등호 주변에 공백이 없어야 한다.
+- 함수 호출의 키워드 인수에도 공백을 사용하면 안된다.
+- 프로그램이나 모듈에 함수가 둘 이상 있는 경우 두 함수를 두 개의 빈 줄로 구분해야 한다.
+- 모든 import 문은 파일 처음에 써야 한다.
+
+제일 좋은 건 코드 스타일 자동화 하는 것!!
+- https://black.readthedocs.io/en/latest/
