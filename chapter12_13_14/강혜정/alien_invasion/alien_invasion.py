@@ -5,6 +5,8 @@ import pygame
 
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
+from button import Button
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -24,8 +26,9 @@ class AlienInvasion:
         # self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
 
-        # 게임 기록을 저장할 인스턴스를 만듭니다
+        # 게임 기록을 저장하고 점수판을 표시할 인스턴스를 만듭니다
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -33,8 +36,11 @@ class AlienInvasion:
 
         self._create_fleet()
 
-        # 게임을 활성 상태로 시작합니다
-        self.game_active = True
+        # 게임을 비활성 상태로 시작합니다
+        self.game_active = False
+
+        # [플레이] 버튼을 만듭니다
+        self.play_button = Button(self, "Play")
 
     def run_game(self):
         """게임의 메인 루프를 시작합니다"""
@@ -45,7 +51,7 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
-                
+
             self._update_screen()
             self.clock.tick(60)
 
@@ -58,6 +64,32 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+    
+    def _check_play_button(self, mouse_pos):
+        """플레이어가 [플레이] 버튼을 클릭하면 게임을 시작합니다"""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.game_active:
+            # 게임 기록 초기화
+            self.settings.initialize_dynamic_settings()
+            self.stats.reset_stats()
+            self.sb.prep_score()
+            self.sb.prep_level()
+            self.sb.prep_ships()
+            self.game_active = True
+
+            # 남아 있는 탄환과 외계인을 모두 제거합니다
+            self.bullets.empty()
+            self.aliens.empty()
+
+            # 함대를 새로 만들고 우주선을 화면 하단 중앙으로 이동시킵니다
+            self._create_fleet()
+            self.ship.center_ship()
+
+            # 마우스 커서를 숨깁니다
+            pygame.mouse.set_visible(False)
     
     def _check_keydown_events(self, event):
         """키를 누를 때 응답합니다"""
@@ -100,10 +132,21 @@ class AlienInvasion:
         # 충돌한 탄환과 외계인을 제거합니다
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+            self.sb.prep_score()
+            self.sb.check_high_score()
+
         if not self.aliens:
             # 남아 있는 탄환을 제거하고 함대를 새로 만듭니다
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
+
+            # 레벨을 올립니다
+            self.stats.level += 1
+            self.sb.prep_level()
 
     def _update_aliens(self):
         """함대가 경계에 도달했는지 확인하고 위치를 업데이트합니다"""
@@ -119,8 +162,9 @@ class AlienInvasion:
     def _ship_hit(self):
         """외계인이 우주선에 충돌할 때 할 작업"""
         if self.stats.ships_left > 0:
-            # ships_left에서 1을 뺍니다
+            # ships_left 값을 줄이고 점수판을 업데이트합니다
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
 
             # 남아 있는 탄환과 외계인을 모두 제거합니다
             self.bullets.empty()
@@ -134,6 +178,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
         """화면 하단에 도달한 외계인이 있는지 확인합니다"""
@@ -190,6 +235,14 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.ship.blitme()
         self.aliens.draw(self.screen)
+
+        # 점수 정보를 그립니다
+        self.sb.show_score()
+
+        # 게임이 비활성 상태이면 [플레이] 버튼을 그립니다
+        if not self.game_active:
+            self.play_button.draw_button()
+
 
         pygame.display.flip()
 
