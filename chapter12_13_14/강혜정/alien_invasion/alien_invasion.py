@@ -72,24 +72,27 @@ class AlienInvasion:
         """플레이어가 [플레이] 버튼을 클릭하면 게임을 시작합니다"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
-            # 게임 기록 초기화
-            self.settings.initialize_dynamic_settings()
-            self.stats.reset_stats()
-            self.sb.prep_score()
-            self.sb.prep_level()
-            self.sb.prep_ships()
-            self.game_active = True
+            self._start_game()
+    
+    def _start_game(self):
+        # 게임 기록 초기화
+        self.settings.initialize_dynamic_settings()
+        self.stats.reset_stats()
+        self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ships()
+        self.game_active = True
 
-            # 남아 있는 탄환과 외계인을 모두 제거합니다
-            self.bullets.empty()
-            self.aliens.empty()
+        # 남아 있는 탄환과 외계인을 모두 제거합니다
+        self.bullets.empty()
+        self.aliens.empty()
 
-            # 함대를 새로 만들고 우주선을 화면 하단 중앙으로 이동시킵니다
-            self._create_fleet()
-            self.ship.center_ship()
+        # 함대를 새로 만들고 우주선을 화면 하단 중앙으로 이동시킵니다
+        self._create_fleet()
+        self.ship.center_ship()
 
-            # 마우스 커서를 숨깁니다
-            pygame.mouse.set_visible(False)
+        # 마우스 커서를 숨깁니다
+        pygame.mouse.set_visible(False)
     
     def _check_keydown_events(self, event):
         """키를 누를 때 응답합니다"""
@@ -99,6 +102,10 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_s:
+            self._start_game()
+        elif event.key == pygame.K_p:
+            self.game_active = not self.game_active
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
     
