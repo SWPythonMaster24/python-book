@@ -10,6 +10,7 @@ class GameStats:
         self.reset_stats()
 
         # 최고 점수는 초기화하지 않습니다
+        self.high_score = 0
         self._get_high_score()
 
     def _get_high_score(self):
