@@ -1,5 +1,7 @@
 import sys
 from time import sleep
+from pathlib import Path 
+import json
 
 import pygame
 
@@ -59,7 +61,7 @@ class AlienInvasion:
         """키보드와 마우스 이벤트에 응답합니다"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
+                self._exit_game()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -101,6 +103,15 @@ class AlienInvasion:
         self._reset_game_settings()
         self.game_active = False
     
+    def _exit_game(self):
+        self._save_high_score()
+        sys.exit()
+
+    def _save_high_score(self):
+        path = Path('high_score.json')
+        contents = json.dumps(self.stats.high_score)
+        path.write_text(contents)
+    
     def _check_keydown_events(self, event):
         """키를 누를 때 응답합니다"""
         if event.key == pygame.K_RIGHT:
@@ -108,7 +119,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
-            sys.exit()
+            self._exit_game()
         elif event.key == pygame.K_r:
             self._reset_game()
         elif event.key == pygame.K_p:
