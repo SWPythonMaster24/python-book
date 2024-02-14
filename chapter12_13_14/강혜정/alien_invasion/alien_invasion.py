@@ -2,6 +2,7 @@ import sys
 from time import sleep
 from pathlib import Path 
 import json
+import random
 
 import pygame
 
@@ -40,6 +41,8 @@ class AlienInvasion:
 
         # 게임을 비활성 상태로 시작합니다
         self.game_active = False
+
+        # 
 
         # [플레이] 버튼을 만듭니다
         self.play_button = Button(self, "Play")
@@ -227,8 +230,9 @@ class AlienInvasion:
         current_x, current_y = alien_width, alien_height
         while current_y < (self.settings.screen_height - 3 * alien_height):
             while current_x < (self.settings.screen_width - 2 * alien_width):
+                print(random.randrange(5,7))
                 self._create_alien(current_x, current_y)
-                current_x += 2 * alien_width
+                current_x += 2 * alien_width * (random.random() + 1)
             
             # 한 줄이 끝났으니 x 값은 초기화하고 y 값은 늘립니다
             current_x = alien_width
